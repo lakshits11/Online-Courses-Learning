@@ -1,21 +1,14 @@
-import urllib.request, urllib.parse, urllib.error
+import urllib.request as ur
+import urllib.parse as up
 import json
 
-#Api
-api = 'http://py4e-data.dr-chuck.net/geojson?'
-
-#Input data
-link = input('Enter location: ')
-link = api + urllib.parse.urlencode({'address':link})
-print('Retrieving', link)
-
-html = urllib.request.urlopen(link).read().decode()
-print('Retrieved', len(html), 'characters')
-
-try:
-    js = json.loads(html)
-except:
-    js = None
-
-placeId = js['results'][0]['place_id']
-print('Place id', placeId)
+serviceurl = "http://py4e-data.dr-chuck.net/json?key=42&"
+address_input = input("Enter location: ")
+params = {"sensor": "false", "address": address_input}
+url = serviceurl + up.urlencode(params)
+print("Retrieving ",url)
+data = ur.urlopen(url).read().decode('utf-8')
+print('Retrieved', len(data), 'characters')
+json_obj = json.loads(data)
+place_id = json_obj["results"][0]["place_id"]
+print("Place id", place_id)
